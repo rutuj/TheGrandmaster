@@ -6,12 +6,12 @@ public class ChessEngine {
     static String chessboard[][] = {
         {"r","n","b","q","k","b","n","r"},
         {"p","p","p","p","p","p","p","p"},
+        {" "," "," "," "," ","N"," "," "},
         {" "," "," "," "," "," "," "," "},
-        {" "," "," ","Q"," "," "," "," "},
         {" "," "," "," "," "," "," "," "},
         {" "," "," "," "," "," "," "," "},
         {"P","P","P","P","P","P","P","P"},
-        {"R","N","B"," ","K","B","N","R"}};
+        {"R","N","B","Q","K","B"," ","R"}};
     
     
 
@@ -126,7 +126,37 @@ public class ChessEngine {
         
         
         public static String possibleN(int i) {
-            String list = "";
+            String list = "", oldPiece;
+            int x = i/8, y = i%8;
+            for(int j = -2;j <= 2;j+=4) {
+                for(int k = -1;k <= 1;k+=2) {
+                    try {
+                if(Character.isLowerCase(chessboard[x + k][y + j].charAt(0)) || " ".equals(chessboard[x + k][y + j])) {
+                    oldPiece = chessboard[x + k][y + j];
+                    chessboard[x + k][y + j] = "N";
+                    if(true) {
+                        list = list + x + y + (x + k) + (y + j) + oldPiece;
+                    }
+                    chessboard[x + k][y + j] = oldPiece;
+                    chessboard[x][y] = "N";
+                            }
+                if(Character.isLowerCase(chessboard[x + j][y + k].charAt(0)) || " ".equals(chessboard[x + j][y + k])) {
+                    oldPiece = chessboard[x + j][y + k];
+                    chessboard[x + j][y + k] = "N";
+                    if(true) {
+                        list = list + x + y + (x + j) + (y + k) + oldPiece;
+                    }
+                    chessboard[x + j][y + k] = oldPiece;
+                    chessboard[x][y] = "N";
+                }
+                    }
+                catch(Exception e) {}
+                
+                    
+                }
+            }
+                
+            
             return list;
         }
         public static String possibleB(int i,String piece) {
