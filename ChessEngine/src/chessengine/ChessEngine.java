@@ -6,12 +6,12 @@ public class ChessEngine {
     static String chessboard[][] = {
         {"r","n","b","q","k","b","n","r"},
         {"p","p","p","p","p","p","p","p"},
-        {" "," "," "," "," ","N"," "," "},
         {" "," "," "," "," "," "," "," "},
         {" "," "," "," "," "," "," "," "},
         {" "," "," "," "," "," "," "," "},
-        {"P","P","P","P","P","P","P","P"},
-        {"R","N","B","Q","K","B"," ","R"}};
+        {" "," "," "," "," "," "," "," "},
+        {"P","P","P"," ","P","P","P","P"},
+        {"R","N","B","Q","K","B","N","R"}};
     
     
 
@@ -140,6 +140,9 @@ public class ChessEngine {
                     chessboard[x + k][y + j] = oldPiece;
                     chessboard[x][y] = "N";
                             }
+                    }
+                catch(Exception e) {}
+                try {
                 if(Character.isLowerCase(chessboard[x + j][y + k].charAt(0)) || " ".equals(chessboard[x + j][y + k])) {
                     oldPiece = chessboard[x + j][y + k];
                     chessboard[x + j][y + k] = "N";
