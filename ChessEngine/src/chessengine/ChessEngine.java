@@ -6,12 +6,12 @@ public class ChessEngine {
     static String chessboard[][] = {
         {"r","n","b","q","k","b","n","r"},
         {"p","p","p","p","p","p","p","p"},
-        {" "," "," "," "," ","K"," "," "},
         {" "," "," "," "," "," "," "," "},
+        {" "," "," ","Q"," "," "," "," "},
         {" "," "," "," "," "," "," "," "},
         {" "," "," "," "," "," "," "," "},
         {"P","P","P","P","P","P","P","P"},
-        {"R","N","B","Q"," ","B","N","R"}};
+        {"R","N","B"," ","K","B","N","R"}};
     
     
 
@@ -46,13 +46,14 @@ public class ChessEngine {
                 switch (chessboard[i/8][i%8]) {
                     case "P": list+=possibleP(i);
                         break;
-                    case "R": list+=possibleR(i);
+                    case "R": list+=possibleR(i,"R");
                         break;
                     case "N": list+=possibleN(i);
                         break;
-                    case "B": list+=possibleB(i);
+                    case "B": list+=possibleB(i,"B");
                         break;
-                    case "Q": list+=possibleQ(i);
+                    case "Q": list+=possibleR(i,"Q");
+                              list+=possibleB(i,"Q");
                         break;
                     case "K": 
                         list+=possibleK(i);
@@ -65,20 +66,133 @@ public class ChessEngine {
             String list = "";
             return list;
         }
-        public static String possibleR(int i) {
-            String list = "";
-            return list;
+        public static String possibleR(int i, String piece) {
+            String list = "", oldPiece;
+            int ctr = 1, x = i/8, y = i%8;
+            for(int j = -1;j <= 1; j+=2) {
+                try {
+                while(" ".equals(chessboard[x][y + ctr*j])) {
+                        oldPiece = chessboard[x][y + ctr*j];
+                        chessboard[x][y + ctr*j] = piece;
+                        if(true) {
+                            list = list + x + y + x + (y + ctr*j) + oldPiece;                          
+                        }
+                        chessboard[x][y + ctr*j] = oldPiece;
+                        chessboard[x][y] = piece;
+                        ctr++;
+                    
+                }
+                if(Character.isLowerCase(chessboard[x][y + ctr*j].charAt(0))) {
+                        oldPiece = chessboard[x][y + ctr*j];
+                        chessboard[x][y + ctr*j] = piece;
+                        if(true) {
+                            list = list + x + y + x + (y + ctr*j) + oldPiece;                          
+                        }
+                        chessboard[x][y + ctr*j] = oldPiece;
+                        chessboard[x][y] = piece;                    
+                    
+                }
+                
         }
+                catch(Exception e) {}
+                ctr = 1;
+                try {
+                    while(" ".equals(chessboard[x + j*ctr][y])) {
+                        oldPiece = chessboard[x + j*ctr][y];
+                        chessboard[x + j*ctr][y] = piece;
+                        if(true) {
+                            list = list + x + y + (x + j*ctr) + y + oldPiece;
+                        }
+                        chessboard[x + j*ctr][y] = oldPiece;
+                        chessboard[x][y] = piece;
+                        ctr++;
+                        }
+                    if(Character.isLowerCase(chessboard[x + j*ctr][y].charAt(0)))
+                    {
+                        oldPiece = chessboard[x + j*ctr][y];
+                        chessboard[x + j*ctr][y] = piece;
+                        if(true) {
+                            list = list + x + y + (x + j*ctr) + y + oldPiece;
+                        }
+                        chessboard[x + j*ctr][y] = oldPiece;
+                        chessboard[x][y] = piece;                        
+                    }
+                }
+                catch(Exception e) {}
+                ctr = 1;
+            }
+            return list;
+        } //end of possibleR function
+        
+        
         public static String possibleN(int i) {
             String list = "";
             return list;
         }
-        public static String possibleB(int i) {
-            String list = "";
-            return list;
+        public static String possibleB(int i,String piece) {
+            String list = "", oldPiece;
+            int ctr = 1, x = i/8, y = i%8;
+            for(int j = -1;j <= 1; j+=2) {
+                try {
+                while(" ".equals(chessboard[x + ctr*j][y + ctr*j])) {
+                        oldPiece = chessboard[x + ctr*j][y + ctr*j];
+                        chessboard[x + ctr*j][y + ctr*j] = piece;
+                        if(true) {
+                            list = list + x + y + (x + ctr*j) + (y + ctr*j) + oldPiece;                          
+                        }
+                        chessboard[x + ctr*j][y + ctr*j] = oldPiece;
+                        chessboard[x][y] = piece;
+                        ctr++;
+                    
+                }
+                if(Character.isLowerCase(chessboard[x + ctr*j][y + ctr*j].charAt(0))) {
+                        oldPiece = chessboard[x + ctr*j][y + ctr*j];
+                        chessboard[x + ctr*j][y + ctr*j] = piece;
+                        if(true) {
+                            list = list + x + y + (x + ctr*j) + (y + ctr*j) + oldPiece;                          
+                        }
+                        chessboard[x + ctr*j][y + ctr*j] = oldPiece;
+                        chessboard[x][y] = piece;                    
+                    
+                }
+                
         }
+                catch(Exception e) {}
+                ctr = 1;
+                try {
+                while(" ".equals(chessboard[x + ctr*j][y - ctr*j])) {
+                        oldPiece = chessboard[x + ctr*j][y - ctr*j];
+                        chessboard[x + ctr*j][y - ctr*j] = piece;
+                        if(true) {
+                            list = list + x + y + (x + ctr*j) + (y - ctr*j) + oldPiece;                          
+                        }
+                        chessboard[x + ctr*j][y - ctr*j] = oldPiece;
+                        chessboard[x][y] = piece;
+                        ctr++;
+                    
+                }
+                if(Character.isLowerCase(chessboard[x + ctr*j][y - ctr*j].charAt(0))) {
+                        oldPiece = chessboard[x + ctr*j][y - ctr*j];
+                        chessboard[x + ctr*j][y - ctr*j] = piece;
+                        if(true) {
+                            list = list + x + y + (x + ctr*j) + (y - ctr*j) + oldPiece;                          
+                        }
+                        chessboard[x + ctr*j][y - ctr*j] = oldPiece;
+                        chessboard[x][y] = piece;                    
+                    
+                }
+                
+        }
+                catch(Exception e) {}
+                ctr = 1;
+            }
+            return list;
+        } //end of possibleB function
+            
+           
+        
         public static String possibleQ(int i) {
-            String list = "";
+            String list = "";            
             return list;
         }
         public static String possibleK(int i) {
@@ -107,12 +221,12 @@ public class ChessEngine {
                         
             }
             return list;
-        }
+        } //end of possibleK function
 
-    /* private static boolean kingSafe() {
+     /*private static boolean kingSafe() {
         
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    
+        return 1;
         }*/
         
     }
