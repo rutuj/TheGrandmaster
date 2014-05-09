@@ -63,8 +63,79 @@ public class ChessEngine {
         return list;
     }
         public static String possibleP(int i) {
-            String list = "";
-            return list;
+        String list="", oldPiece;
+        int x=i/8, y=i%8;
+        for (int j=-1; j<=1; j+=2) {
+            try {//kill black piece
+                if (Character.isLowerCase(chessboard[x-1][y+j].charAt(0)) && i>=16) {
+                    oldPiece=chessboard[x-1][y+j];
+                    chessboard[x][y]=" ";
+                    chessboard[x-1][y+j]="P";
+                    if (kingSafe()) {
+                        list=list+x+y+(x-1)+(y+j)+oldPiece;
+                    }
+                    chessboard[x][y]="P";
+                    chessboard[x-1][y+j]=oldPiece;
+                }
+            } catch (Exception e) {}
+            try {//kill + promotion
+                if (Character.isLowerCase(chessboard[x-1][y+j].charAt(0)) && i<16) {
+                    String[] temp={"Q","R","B","K"};
+                    for (int k=0; k<4; k++) {
+                        oldPiece=chessboard[x-1][y+j];
+                        chessboard[x][y]=" ";
+                        chessboard[x-1][y+j]=temp[k];
+                        if (kingSafe()) {
+                            //column1,column2,captured-piece,new-piece,P
+                            list=list+y+(y+j)+oldPiece+temp[k]+"P";
+                        }
+                        chessboard[x][y]="P";
+                        chessboard[x-1][y+j]=oldPiece;
+                    }
+                }
+            } catch (Exception e) {}
+        }
+        try {//move 1
+            if (" ".equals(chessboard[x-1][y]) && i>=16) {
+                oldPiece=chessboard[x-1][y];
+                chessboard[x][y]=" ";
+                chessboard[x-1][y]="P";
+                if (kingSafe()) {
+                    list=list+x+y+(x-1)+y+oldPiece;
+                }
+                chessboard[x][y]="P";
+                chessboard[x-1][y]=oldPiece;
+            }
+        } catch (Exception e) {}
+        try {//only promotion
+            if (" ".equals(chessboard[x-1][y]) && i<16) {
+                String[] temp={"Q","R","B","K"};
+                for (int k=0; k<4; k++) {
+                    oldPiece=chessboard[y-1][x];
+                    chessboard[x][y]=" ";
+                    chessboard[x-1][y]=temp[k];
+                    if (kingSafe()) {
+                        //column1,column2,captured-piece,new-piece,P
+                        list=list+y+y+oldPiece+temp[k]+"P";
+                    }
+                    chessboard[x][y]="P";
+                    chessboard[x-1][y]=oldPiece;
+                }
+            }
+        } catch (Exception e) {}
+        try {//move 2
+            if (" ".equals(chessboard[x-1][y]) && " ".equals(chessboard[x-2][y]) && i>=48) {
+                oldPiece=chessboard[x-2][y];
+                chessboard[y][x]=" ";
+                chessboard[x-2][y]="P";
+                if (kingSafe()) {
+                    list=list+x+y+(x-2)+y+oldPiece;
+                }
+                chessboard[x][y]="P";
+                chessboard[x-2][y]=oldPiece;
+            }
+        } catch (Exception e) {}
+        return list;
         }
         public static String possibleR(int i, String piece) {
             String list = "", oldPiece;
