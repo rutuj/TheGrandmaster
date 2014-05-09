@@ -5,17 +5,21 @@ public class ChessEngine {
     
     static String chessboard[][] = {
         {"r","n","b","q","k","b","n","r"},
-        {"p","p","p","p","p","p","p","p"},
+        {"p","p","p","p"," ","p","p","p"},
+        {" "," "," "," "," ","Q"," "," "},
+        {" "," "," "," ","p"," ","K"," "},
         {" "," "," "," "," "," "," "," "},
         {" "," "," "," "," "," "," "," "},
-        {" "," "," "," "," "," "," "," "},
-        {" "," "," "," "," "," "," "," "},
-        {"P","P","P"," ","P","P","P","P"},
-        {"R","N","B","Q","K","B","N","R"}};
+        {"P","P","P","P","P","P","P","P"},
+        {"R","N","B"," "," ","B","N","R"}};
+    
+    static int kingPosW;
     
     
 
     public static void main(String[] args) {
+        while(!"K".equals(chessboard[kingPosW/8][kingPosW%8])) {kingPosW++;}
+       // while(!"K".equals(chessboard[kingPosB/8][kingPosB%8])) {kingPosB++;}
         
         System.out.println(possibleMoves());
         /* JFrame f=new JFrame("The Grandmaster");
@@ -24,14 +28,10 @@ public class ChessEngine {
         f.add(ui);
         f.setSize(500,500);
         f.setVisible(true);
-        1  9 17 25 33
-        2 10 18 26 ....
-        3 11 19 27
-        4 12 20 28
-        5 13 21 29
-        6 14 22 30 
-        7 15 23 31
-        8 16 24 32
+        1  2  3  4  5  6  7  8
+        9  10 11 12 13 14 15 16
+        17 18 19 20 21 22 23 24
+        .....
         
         */
     }
@@ -60,7 +60,7 @@ public class ChessEngine {
                         break;
             }
         }
-        return list;//x1,y1,x2,yx,captured piece
+        return list;
     }
         public static String possibleP(int i) {
             String list = "";
@@ -74,7 +74,7 @@ public class ChessEngine {
                 while(" ".equals(chessboard[x][y + ctr*j])) {
                         oldPiece = chessboard[x][y + ctr*j];
                         chessboard[x][y + ctr*j] = piece;
-                        if(true) {
+                        if(kingSafe()) {
                             list = list + x + y + x + (y + ctr*j) + oldPiece;                          
                         }
                         chessboard[x][y + ctr*j] = oldPiece;
@@ -85,7 +85,7 @@ public class ChessEngine {
                 if(Character.isLowerCase(chessboard[x][y + ctr*j].charAt(0))) {
                         oldPiece = chessboard[x][y + ctr*j];
                         chessboard[x][y + ctr*j] = piece;
-                        if(true) {
+                        if(kingSafe()) {
                             list = list + x + y + x + (y + ctr*j) + oldPiece;                          
                         }
                         chessboard[x][y + ctr*j] = oldPiece;
@@ -100,7 +100,7 @@ public class ChessEngine {
                     while(" ".equals(chessboard[x + j*ctr][y])) {
                         oldPiece = chessboard[x + j*ctr][y];
                         chessboard[x + j*ctr][y] = piece;
-                        if(true) {
+                        if(kingSafe()) {
                             list = list + x + y + (x + j*ctr) + y + oldPiece;
                         }
                         chessboard[x + j*ctr][y] = oldPiece;
@@ -111,7 +111,7 @@ public class ChessEngine {
                     {
                         oldPiece = chessboard[x + j*ctr][y];
                         chessboard[x + j*ctr][y] = piece;
-                        if(true) {
+                        if(kingSafe()) {
                             list = list + x + y + (x + j*ctr) + y + oldPiece;
                         }
                         chessboard[x + j*ctr][y] = oldPiece;
@@ -122,9 +122,7 @@ public class ChessEngine {
                 ctr = 1;
             }
             return list;
-        } //end of possibleR function
-        
-        
+        } //end of possibleR function       
         public static String possibleN(int i) {
             String list = "", oldPiece;
             int x = i/8, y = i%8;
@@ -134,7 +132,7 @@ public class ChessEngine {
                 if(Character.isLowerCase(chessboard[x + k][y + j].charAt(0)) || " ".equals(chessboard[x + k][y + j])) {
                     oldPiece = chessboard[x + k][y + j];
                     chessboard[x + k][y + j] = "N";
-                    if(true) {
+                    if(kingSafe()) {
                         list = list + x + y + (x + k) + (y + j) + oldPiece;
                     }
                     chessboard[x + k][y + j] = oldPiece;
@@ -146,7 +144,7 @@ public class ChessEngine {
                 if(Character.isLowerCase(chessboard[x + j][y + k].charAt(0)) || " ".equals(chessboard[x + j][y + k])) {
                     oldPiece = chessboard[x + j][y + k];
                     chessboard[x + j][y + k] = "N";
-                    if(true) {
+                    if(kingSafe()) {
                         list = list + x + y + (x + j) + (y + k) + oldPiece;
                     }
                     chessboard[x + j][y + k] = oldPiece;
@@ -161,7 +159,7 @@ public class ChessEngine {
                 
             
             return list;
-        }
+        } //end of possibleN function
         public static String possibleB(int i,String piece) {
             String list = "", oldPiece;
             int ctr = 1, x = i/8, y = i%8;
@@ -170,7 +168,7 @@ public class ChessEngine {
                 while(" ".equals(chessboard[x + ctr*j][y + ctr*j])) {
                         oldPiece = chessboard[x + ctr*j][y + ctr*j];
                         chessboard[x + ctr*j][y + ctr*j] = piece;
-                        if(true) {
+                        if(kingSafe()) {
                             list = list + x + y + (x + ctr*j) + (y + ctr*j) + oldPiece;                          
                         }
                         chessboard[x + ctr*j][y + ctr*j] = oldPiece;
@@ -181,7 +179,7 @@ public class ChessEngine {
                 if(Character.isLowerCase(chessboard[x + ctr*j][y + ctr*j].charAt(0))) {
                         oldPiece = chessboard[x + ctr*j][y + ctr*j];
                         chessboard[x + ctr*j][y + ctr*j] = piece;
-                        if(true) {
+                        if(kingSafe()) {
                             list = list + x + y + (x + ctr*j) + (y + ctr*j) + oldPiece;                          
                         }
                         chessboard[x + ctr*j][y + ctr*j] = oldPiece;
@@ -196,7 +194,7 @@ public class ChessEngine {
                 while(" ".equals(chessboard[x + ctr*j][y - ctr*j])) {
                         oldPiece = chessboard[x + ctr*j][y - ctr*j];
                         chessboard[x + ctr*j][y - ctr*j] = piece;
-                        if(true) {
+                        if(kingSafe()) {
                             list = list + x + y + (x + ctr*j) + (y - ctr*j) + oldPiece;                          
                         }
                         chessboard[x + ctr*j][y - ctr*j] = oldPiece;
@@ -207,7 +205,7 @@ public class ChessEngine {
                 if(Character.isLowerCase(chessboard[x + ctr*j][y - ctr*j].charAt(0))) {
                         oldPiece = chessboard[x + ctr*j][y - ctr*j];
                         chessboard[x + ctr*j][y - ctr*j] = piece;
-                        if(true) {
+                        if(kingSafe()) {
                             list = list + x + y + (x + ctr*j) + (y - ctr*j) + oldPiece;                          
                         }
                         chessboard[x + ctr*j][y - ctr*j] = oldPiece;
@@ -220,14 +218,11 @@ public class ChessEngine {
                 ctr = 1;
             }
             return list;
-        } //end of possibleB function
-            
-           
-        
-        public static String possibleQ(int i) {
+        } //end of possibleB function       
+       /* public static String possibleQ(int i) {
             String list = "";            
             return list;
-        }
+        }*/
         public static String possibleK(int i) {
             String list = "", oldPiece;
             int x=i/8, y = i%8;
@@ -240,7 +235,7 @@ public class ChessEngine {
                         
                         oldPiece = chessboard[x-1 + j/3][y-1 + j%3];
                         chessboard[x-1 + j/3][y-1 + j%3] = "K";
-                        if(true) {
+                        if(kingSafe()) {
                             list = list + x + y + (x-1 + j/3) + (y-1 + j%3) + oldPiece;                          
                         }
                         chessboard[x-1 + j/3][y-1 + j%3] = oldPiece;
@@ -256,6 +251,82 @@ public class ChessEngine {
             return list;
         } //end of possibleK function
 
+        public static boolean kingSafe() {
+            //check for bishop and diagonal queen movement
+            int ctr=1;
+            for (int i=-1; i<=1; i+=2) {
+                for (int j=-1; j<=1; j+=2) {
+                    try {
+                        while(" ".equals(chessboard[kingPosW/8+ctr*i][kingPosW%8+ctr*j])) {ctr++;}
+                        if ("b".equals(chessboard[kingPosW/8+ctr*i][kingPosW%8+ctr*j]) ||
+                                "q".equals(chessboard[kingPosW/8+ctr*i][kingPosW%8+ctr*j])) {
+                            return false;
+                        }
+                    } catch (Exception e) {}
+                    ctr=1;
+                }
+            }
+            //check for rook and perpendicular queen movement
+            for (int i=-1; i<=1; i+=2) {
+                try {
+                    while(" ".equals(chessboard[kingPosW/8][kingPosW%8+ctr*i])) {ctr++;}
+                    if ("r".equals(chessboard[kingPosW/8][kingPosW%8+ctr*i]) ||
+                            "q".equals(chessboard[kingPosW/8][kingPosW%8+ctr*i])) {
+                        return false;
+                    }
+                } catch (Exception e) {}
+                ctr=1;
+                try {
+                    while(" ".equals(chessboard[kingPosW/8+ctr*i][kingPosW%8])) {ctr++;}
+                    if ("r".equals(chessboard[kingPosW/8+ctr*i][kingPosW%8]) ||
+                            "q".equals(chessboard[kingPosW/8+ctr*i][kingPosW%8])) {
+                        return false;
+                    }
+                } catch (Exception e) {}
+                ctr=1;
+            }
+            //check for knight
+            for (int i=-1; i<=1; i+=2) {
+                for (int j=-1; j<=1; j+=2) {
+                    try {
+                        if ("k".equals(chessboard[kingPosW/8+i][kingPosW%8+j*2])) {
+                            return false;
+                        }
+                    } catch (Exception e) {}
+                    try {
+                        if ("k".equals(chessboard[kingPosW/8+i*2][kingPosW%8+j])) {
+                            return false;
+                        }
+                    } catch (Exception e) {}
+                }
+            }
+            //check for pawn
+            if (kingPosW>=16) { //check so that king doesn't lie in last 2 lines
+                try {
+                    if ("p".equals(chessboard[kingPosW/80-1][kingPosW%8-1])) {
+                        return false;
+                    }
+                } catch (Exception e) {}
+                try {
+                    if ("p".equals(chessboard[kingPosW/80-1][kingPosW%8+1])) {
+                        return false;
+                    }
+                } catch (Exception e) {}
+                //king
+                for (int i=-1; i<=1; i++) {
+                    for (int j=-1; j<=1; j++) {
+                        if (i!=0 || j!=0) {
+                            try {
+                                if ("a".equals(chessboard[kingPosW/8+i][kingPosW%8+j])) {
+                                    return false;
+                                }
+                            } catch (Exception e) {}
+                        }
+                    }
+                }
+            }
+            return true;
+        }
      /*private static boolean kingSafe() {
         
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
