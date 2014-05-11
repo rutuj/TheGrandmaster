@@ -14,7 +14,7 @@ public class ChessEngine {
         {"R","N","B"," "," ","B","N","R"}};
     
     static int kingPosW;
-    
+    static int defaultDepth = 4;
     
 
     public static void main(String[] args) {
@@ -36,6 +36,58 @@ public class ChessEngine {
         */
     }
         
+        public static String alphaBeta(int depth, int beta, int alpha, String move, int player) {
+        //return in the form of 1234b##########
+        String list=possibleMoves();
+        if (depth==0 || list.length()==0) {return move+(rating()*(player*2-1));}
+        //sort later
+        player=1-player;//either 1 or 0
+        for (int i=0;i<list.length();i+=5) {
+            makeMove(list.substring(i,i+5));
+            flipBoard();
+            String returnString=alphaBeta(depth-1, beta, alpha, list.substring(i,i+5), player);
+            int value=Integer.valueOf(returnString.substring(5));
+            flipBoard();
+            undoMove(list.substring(i,i+5));
+            if (player==0) {
+                if (value<=beta) {beta=value; if (depth==defaultDepth) {move=returnString.substring(0,5);}}
+            } else {
+                if (value>alpha) {alpha=value; if (defaultDepth==depth) {move=returnString.substring(0,5);}}
+            }
+            if (alpha>=beta) {
+                if (player==0) {return move+beta;} else {return move+alpha;}
+            }
+        }
+        if (player==0) {return move+beta;} else {return move+alpha;}
+    }
+    public static void flipBoard() {
+        
+    }
+    public static void makeMove(String move) {
+        int x1 = Character.getNumericValue(move.charAt(0)) , x2 = Character.getNumericValue(move.charAt(1));
+        int y1 = Character.getNumericValue(move.charAt(2)) , y2 = Character.getNumericValue(move.charAt(3));
+        if(move.charAt(4)!='P') {
+            chessboard[x2][y2] = Character.toString(move.charAt(4));
+            chessboard[x1][y1] = " ";
+        }
+        else {
+            chessboard[1][y1]=" ";
+            chessboard[0][y2]=String.valueOf(move.charAt(3));
+        }
+    }
+    
+    public static void undoMove(String move) {
+        int x1 = Character.getNumericValue(move.charAt(0)) , x2 = Character.getNumericValue(move.charAt(1));
+        int y1 = Character.getNumericValue(move.charAt(2)) , y2 = Character.getNumericValue(move.charAt(3));
+        if(move.charAt(4)!='P') {
+            chessboard[x1][y1] = chessboard[x2][y2];
+            chessboard[x2][y2] = Character.toString(move.charAt(4));
+        }
+        else {
+           chessboard[1][y1]="P";
+           chessboard[0][y2]=String.valueOf(move.charAt(2));
+        }
+    }
     /**
      *
      * @return
@@ -403,6 +455,10 @@ public class ChessEngine {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         return 1;
         }*/
+
+    private static int rating() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
         
     }
     
