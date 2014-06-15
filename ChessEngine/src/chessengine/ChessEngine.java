@@ -135,7 +135,7 @@ public class ChessEngine {
     }
     public static String alphaBeta(int depth, int beta, int alpha, String move, int player) {
         //The String is in the form of 1234b##### (move, then score)
-        String list=posibleMoves();
+        String list=possibleMoves();
         if (depth==0 || list.length()==0) {return move+(rating(list.length(), depth)*(player*2-1));}//The [*(player*2-1)] has been proven correct and necessary
         list=sortMoves2(list);
         player=1-player;
@@ -235,7 +235,7 @@ public class ChessEngine {
         if (listLength==-1) {
             counter-=rateMoveability(-1, depth, material);
         } else {
-            counter-=rateMoveability(posibleMoves().length(), depth, material);
+            counter-=rateMoveability(possibleMoves().length(), depth, material);
         }
         
         flipBoard();
@@ -316,31 +316,31 @@ public class ChessEngine {
                         break;
                     case "Q": counter+=queenBoard[i/8][i%8];
                         break;
-                    case "A": if (material>=1750) {counter+=kingMidBoard[i/8][i%8]; counter+=posibleA(kingPositionC).length()*10;} else {counter+=kingEndBoard[i/8][i%8]; counter+=posibleA(kingPositionC).length()*30;}
+                    case "A": if (material>=1750) {counter+=kingMidBoard[i/8][i%8]; counter+=possibleA(kingPositionC).length()*10;} else {counter+=kingEndBoard[i/8][i%8]; counter+=possibleA(kingPositionC).length()*30;}
                         break;
                 }
             }
         }
         return counter;
     }
-    public static String posibleMoves() {
+    public static String possibleMoves() {
         
         String list="";
         for (int i=0;i<64;i++) {
             if (Character.isUpperCase(chessboard[i/8][i%8].charAt(0))) {
                
                 switch (chessboard[i/8][i%8]) {
-                    case "P": list+=posibleP(i);
+                    case "P": list+=possibleP(i);
                         break;
-                    case "R": list+=posibleR(i);
+                    case "R": list+=possibleR(i);
                         break;
-                    case "K": list+=posibleK(i);
+                    case "K": list+=possibleK(i);
                         break;
-                    case "B": list+=posibleB(i);
+                    case "B": list+=possibleB(i);
                         break;
-                    case "Q": list+=posibleQ(i);
+                    case "Q": list+=possibleQ(i);
                         break;
-                    case "A": list+=posibleA(i);
+                    case "A": list+=possibleA(i);
                         break;//castling is from king point of view
                 }
             }
@@ -348,7 +348,7 @@ public class ChessEngine {
         //these are roughly arranged in order of probability of occuring and not in order of score:
         return list.replaceAll("....a", "");//removes king-captures since they can never happen
     }
-    public static String posibleP(int i) {
+    public static String possibleP(int i) {
         String list="", oldPiece;
         int r=i/8, c=i%8;
             for (int j=-1;j<=1;j+=2) {
@@ -429,7 +429,7 @@ public class ChessEngine {
             } catch (Exception e) {}
         return list;
     }
-    public static String posibleR(int i) {
+    public static String possibleR(int i) {
         String list="", oldPiece;
         int r=i/8, c=i%8;
         int temp=1;
@@ -491,7 +491,7 @@ public class ChessEngine {
         }
         return list;
     }
-    public static String posibleK(int i) {
+    public static String possibleK(int i) {
         String list="", oldPiece;
         int r=i/8, c=i%8;
         for (int j=-1;j<=1;j+=2) {
@@ -526,7 +526,7 @@ public class ChessEngine {
         }
         return list;
     }
-    public static String posibleB(int i) {
+    public static String possibleB(int i) {
         String list="", oldPiece;
         int r=i/8, c=i%8;
         int temp=1;
@@ -563,7 +563,7 @@ public class ChessEngine {
         }
         return list;
     }
-    public static String posibleQ(int i) {
+    public static String possibleQ(int i) {
         String list="", oldPiece;
         int r=i/8, c=i%8;
         int temp=1;
@@ -602,7 +602,7 @@ public class ChessEngine {
         }
         return list;
     }
-    public static String posibleA(int i) {
+    public static String possibleA(int i) {
         String list="", oldPiece;
         int r=i/8, c=i%8;
         for (int j=0;j<9;j++) {

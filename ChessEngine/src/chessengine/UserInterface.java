@@ -143,7 +143,7 @@ public class UserInterface extends JPanel implements MouseListener, MouseMotionL
                     (newMouseX-border)/squareSize+
                     ChessEngine.chessboard[(newMouseY-border)/squareSize][(newMouseX-border)/squareSize];
             }
-            String userMovePosibilities=ChessEngine.posibleMoves();
+            String userMovePosibilities=ChessEngine.possibleMoves();
             if (userMovePosibilities.replace(dragMove, "").length()<userMovePosibilities.length()) {
                 ChessEngine.makeMove(dragMove);
                 ChessEngine.history+=dragMove;
@@ -157,11 +157,11 @@ public class UserInterface extends JPanel implements MouseListener, MouseMotionL
             System.arraycopy(ChessEngine.chessboard[i], 0, chessboard[i], 0, 8);
         }
         ChessEngine.flipBoard();
-        System.out.println(ChessEngine.sortMoves2(ChessEngine.posibleMoves()));
+        System.out.println(ChessEngine.sortMoves2(ChessEngine.possibleMoves()));
         ChessEngine.makeMove(ChessEngine.printMove());
         ChessEngine.flipBoard();
         
-        if (ChessEngine.posibleMoves().length()==0) {System.out.println("Defeat");}
+        if (ChessEngine.possibleMoves().length()==0) {System.out.println("Defeat");}
     }
     public void movePieceEvent() {
         //check for castle remove castling
@@ -181,14 +181,14 @@ public class UserInterface extends JPanel implements MouseListener, MouseMotionL
         }
         ChessEngine.flipBoard();
         ChessEngine.rating(1, 0);
-        System.out.println(ChessEngine.sortMoves2(ChessEngine.posibleMoves()));
-        if (ChessEngine.posibleMoves().length()==0) {
+        System.out.println(ChessEngine.sortMoves2(ChessEngine.possibleMoves()));
+        if (ChessEngine.possibleMoves().length()==0) {
             System.out.println("You win!");
             ChessEngine.flipBoard();
         } else {
             ChessEngine.makeMove(ChessEngine.printMove());
             ChessEngine.flipBoard();
-            if (ChessEngine.posibleMoves().length()==0) {
+            if (ChessEngine.possibleMoves().length()==0) {
                 if (ChessEngine.kingSafe()) {
                     System.out.println("Stalemate");
                 } else {
