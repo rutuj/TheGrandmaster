@@ -589,7 +589,7 @@ public class ChessEngine {
                     if (Character.isLowerCase(chessboard[r-1+j/3][c-1+j%3].charAt(0)) || " ".equals(chessboard[r-1+j/3][c-1+j%3])) {
                         oldPiece=chessboard[r-1+j/3][c-1+j%3];
                         chessboard[r][c]=" ";
-        ***                chessboard[r-1+j/3][c-1+j%3]="A";
+                     chessboard[r-1+j/3][c-1+j%3]="A";
                         int kingTemp=kingPositionC;
                         kingPositionC=i+(j/3)*8+j%3-9;
                         if (kingSafe()) {
