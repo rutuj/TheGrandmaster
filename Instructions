@@ -1,0 +1,6 @@
+Add project to Netbeans and run
+
+              OR
+
+goto "/ChessEngine/dist/"
+execute in terminal : java -jar ChessEngine.jar
